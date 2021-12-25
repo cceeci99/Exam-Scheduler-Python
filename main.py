@@ -77,10 +77,7 @@ class SchedulingExams(csp.CSP):
             return False
 
         # constraints for courses with lab
-        if A[with_lab] and a[slot] == 3:
-            return False
-
-        if B[with_lab] and b[slot] == 3:
+        if (A[with_lab] and a[slot] == 3) or (B[with_lab] and b[slot] == 3):
             return False
 
         if A[with_lab] or B[with_lab]:
@@ -115,7 +112,7 @@ class SchedulingExams(csp.CSP):
 
 if __name__ == '__main__':
     schedule_exam = SchedulingExams("table.csv")
-    #
+
     print("Start simple BackTracking:")
     begin = time.time()
     res_bt, bt_nassigns = csp.backtracking_search(schedule_exam)
@@ -123,7 +120,7 @@ if __name__ == '__main__':
     print("Result Exam Scheduling:")
     schedule_exam.display(res_bt)
     bt_time = end - begin
-    #
+
     # print("Start MAC:")
     # begin = time.time()
     # res_mac, mac_nassigns = csp.backtracking_search(schedule_exam, csp.mrv, csp.lcv, csp.mac)
