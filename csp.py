@@ -424,7 +424,7 @@ def backtracking_search(csp, select_unassigned_variable=first_unassigned_variabl
 
     result = backtrack({})
     assert result is None or csp.goal_test(result)
-    return result, csp.nassigns
+    return result, csp.nassigns     # return number of assigns too
 
 
 # ______________________________________________________________________________
@@ -442,11 +442,11 @@ def min_conflicts(csp, max_steps=100000):
     for i in range(max_steps):
         conflicted = csp.conflicted_vars(current)
         if not conflicted:
-            return current, csp.nassigns
+            return current, csp.nassigns  # return number of assigns too
         var = random.choice(conflicted)
         val = min_conflicts_value(csp, var, current)
         csp.assign(var, val, current)
-    return None, csp.nassigns
+    return None, csp.nassigns  # return number of assigns too
 
 
 def min_conflicts_value(csp, var, current):
