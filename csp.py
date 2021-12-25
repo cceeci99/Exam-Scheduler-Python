@@ -363,7 +363,6 @@ def num_legal_values(csp, var, assignment):
 
 # Value ordering
 
-
 def unordered_domain_values(var, assignment, csp):
     """The default value order."""
     return csp.choices(var)
@@ -425,7 +424,7 @@ def backtracking_search(csp, select_unassigned_variable=first_unassigned_variabl
 
     result = backtrack({})
     assert result is None or csp.goal_test(result)
-    return result
+    return result, csp.nassigns
 
 
 # ______________________________________________________________________________
@@ -443,11 +442,11 @@ def min_conflicts(csp, max_steps=100000):
     for i in range(max_steps):
         conflicted = csp.conflicted_vars(current)
         if not conflicted:
-            return current
+            return current, csp.nassigns
         var = random.choice(conflicted)
         val = min_conflicts_value(csp, var, current)
         csp.assign(var, val, current)
-    return None
+    return None, csp.nassigns
 
 
 def min_conflicts_value(csp, var, current):
