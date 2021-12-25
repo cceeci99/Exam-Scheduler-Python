@@ -114,6 +114,7 @@ class SchedulingExams(csp.CSP):
             if var[with_lab] is True:
                 print("(", var[0], ",", var[1] + "_lab,", var[2], ") -->", "(", assignment[var][0], ",",
                       assignment[var][1] + 1, ")")
+        print("Number of Assignments:" + str(self.nassigns))
 
 
 if __name__ == '__main__':
@@ -122,42 +123,34 @@ if __name__ == '__main__':
     print("Start simple BackTracking:")
     begin = time.time()
     res_bt = csp.backtracking_search(schedule_exam)
-    print("Stop")
     end = time.time()
     print("Result Exam Scheduling:")
     schedule_exam.display(res_bt)
-    # print("Total time of simple backtracking is: " + str(end - begin))
-    bt_time = end-begin
+    bt_time = end - begin
 
     print("Start MAC:")
     begin = time.time()
     res_mac = csp.backtracking_search(schedule_exam, csp.mrv, csp.lcv, csp.mac)
-    print("Stop")
     end = time.time()
     print("Result Exam Scheduling:")
     schedule_exam.display(res_mac)
-    # print("Total time of MAC is: " + str(end - begin))
-    mac_time = end-begin
+    mac_time = end - begin
 
     print("Start FC:")
     begin = time.time()
     res_fc = csp.backtracking_search(schedule_exam, csp.mrv, csp.lcv, csp.forward_checking)
-    print("Stop")
     end = time.time()
     print("Result Exam Scheduling:")
     schedule_exam.display(res_fc)
-    # print("Total time of FC is: " + str(end - begin))
-    fc_time = end-begin
+    fc_time = end - begin
 
     print("Start Min_Conflicts")
     begin = time.time()
     res_min = csp.min_conflicts(schedule_exam)
-    print("Stop")
     end = time.time()
     print("Result Exam Scheduling:")
     schedule_exam.display(res_min)
-    # print("Total time of Min_Conflicts is: " + str(end - begin))
-    mincf_time = end-begin
+    mincf_time = end - begin
 
     print("Total time of simple backtracking is: " + str(bt_time))
     print("Total time of MAC is: " + str(mac_time))
