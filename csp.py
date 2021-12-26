@@ -58,6 +58,8 @@ class CSP(search.Problem):
         self.curr_domains = None
         self.nassigns = 0
 
+        self.total_checks = 0
+
         # ADDED CODE HERE
         self.weight = dict()        # weight counter for dom/wdeg ordering
         for var in self.variables:
@@ -417,15 +419,17 @@ def lcv(var, assignment, csp):
 
 
 def no_inference(csp, var, value, assignment, removals):
-    return True
+    return True, 0
 
 
 def forward_checking(csp, var, value, assignment, removals, select_unassigned_variable=mrv):
     """Prune neighbor values inconsistent with var=value."""
     csp.support_pruning()
+    checks = 0
     for B in csp.neighbors[var]:
         if B not in assignment:
             for b in csp.curr_domains[B][:]:
+                checks += 1
                 if not csp.constraints(var, value, B, b):
                     csp.prune(B, b, removals)
 
@@ -434,8 +438,8 @@ def forward_checking(csp, var, value, assignment, removals, select_unassigned_va
             if not csp.curr_domains[B]:
                 # domain wipe out occurs for (B, var), increment of weight
                 csp.weight[(B, var)] += 1
-                return False
-    return True
+                return False, checks
+    return True, checks
 
 
 def mac(csp, var, value, assignment, removals, constraint_propagation=AC3b):
@@ -458,7 +462,9 @@ def backtracking_search(csp, select_unassigned_variable=first_unassigned_variabl
             if 0 == csp.nconflicts(var, value, assignment):
                 csp.assign(var, value, assignment)
                 removals = csp.suppose(var, value)
-                if inference(csp, var, value, assignment, removals):
+                condition, check = inference(csp, var, value, assignment, removals)
+                csp.total_checks += check
+                if condition:
                     result = backtrack(assignment)
                     if result is not None:
                         return result
@@ -470,7 +476,7 @@ def backtracking_search(csp, select_unassigned_variable=first_unassigned_variabl
     result = backtrack({})
     assert result is None or csp.goal_test(result)
     # ADDED CODE HERE, return number of assigns too
-    return result, csp.nassigns
+    return result, csp.nassigns, csp.total_checks
 
 
 # ______________________________________________________________________________
