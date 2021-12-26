@@ -58,9 +58,10 @@ class CSP(search.Problem):
         self.curr_domains = None
         self.nassigns = 0
 
-        self.total_checks = 0
-
         # ADDED CODE HERE
+
+        self.total_checks = 0       # number of checks, for result metrics
+
         self.weight = dict()        # weight counter for dom/wdeg ordering
         for var in self.variables:
             for nb in self.neighbors[var]:
@@ -369,7 +370,7 @@ def num_legal_values(csp, var, assignment):
         return count(csp.nconflicts(var, val, assignment) == 0 for val in csp.domains[var])
 
 
-# ADDED CODE HERE
+# ADDED CODE HERE: function dom/wdeg
 def dom_wdeg(assignment, csp):
     # in case there are no curr domains we must return another variable ordering or it will cause error of NoneType
     if csp.curr_domains is None:
@@ -393,7 +394,7 @@ def dom_wdeg(assignment, csp):
         curr_ratio = curr_domain_size / sum[var]
 
         if min_ratio > curr_ratio:
-            # selects the variable with the smallest ratio current domain size to current weighted degree
+            # select the variable with the smallest ratio current domain size to current weighted degree
             min_ratio = curr_ratio
             min_var = var
 
@@ -419,7 +420,7 @@ def lcv(var, assignment, csp):
 
 
 def no_inference(csp, var, value, assignment, removals):
-    return True, 0
+    return True, 0  # return 0 checks , or it will cause error
 
 
 def forward_checking(csp, var, value, assignment, removals, select_unassigned_variable=mrv):
@@ -435,6 +436,7 @@ def forward_checking(csp, var, value, assignment, removals, select_unassigned_va
 
             # ADDED CODE HERE
             # because revise function is used only by MAC, we need to change FC to work with dom/wdeg
+            # also return number of checks
             if not csp.curr_domains[B]:
                 # domain wipe out occurs for (B, var), increment of weight
                 csp.weight[(B, var)] += 1
@@ -462,9 +464,10 @@ def backtracking_search(csp, select_unassigned_variable=first_unassigned_variabl
             if 0 == csp.nconflicts(var, value, assignment):
                 csp.assign(var, value, assignment)
                 removals = csp.suppose(var, value)
-                condition, check = inference(csp, var, value, assignment, removals)
+                # MODIFIED CODE HERE to get the number of checks returned by each inference function
+                res, check = inference(csp, var, value, assignment, removals)
                 csp.total_checks += check
-                if condition:
+                if res:
                     result = backtrack(assignment)
                     if result is not None:
                         return result
@@ -475,7 +478,7 @@ def backtracking_search(csp, select_unassigned_variable=first_unassigned_variabl
 
     result = backtrack({})
     assert result is None or csp.goal_test(result)
-    # ADDED CODE HERE, return number of assigns too
+    # ADDED CODE HERE, return number of assigns and total checks too
     return result, csp.nassigns, csp.total_checks
 
 
