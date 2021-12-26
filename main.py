@@ -1,5 +1,6 @@
 import csp
 import time
+import sys
 
 # variables: (semester, course, teacher, difficulty, with_lab)
 semester = 0
@@ -76,7 +77,7 @@ class SchedulingExams(csp.CSP):
         if a[day] == b[day] and a[slot] == b[slot]:
             return False
 
-        # constraints for courses with lab
+        # 2.Constraints for courses with lab
         if (A[with_lab] and a[slot] == 3) or (B[with_lab] and b[slot] == 3):
             return False
 
@@ -85,17 +86,17 @@ class SchedulingExams(csp.CSP):
                 if abs(a[slot] - b[slot]) == 1:
                     return False
 
-        # 2. Not 2 exams of same year on same day
+        # 3. Not 2 exams of same year on same day
         if A[semester] == B[semester]:
             if a[day] == b[day]:
                 return False
 
-        # 3. Not 2 exams with same Teacher on same day
+        # 4. Not 2 exams with same Teacher on same day
         if A[teacher] == B[teacher]:
             if a[day] == b[day]:
                 return False
 
-        # # 4. 2 difficult exams must have a space of 2 days between
+        # # 5. Difficult exams must have a free space of 2 days between
         if A[difficulty] and B[difficulty]:
             if abs(a[day] - b[day]) <= 2:
                 return False
@@ -113,39 +114,57 @@ class SchedulingExams(csp.CSP):
 if __name__ == '__main__':
     schedule_exam = SchedulingExams("table.csv")
 
-    print("Start simple BackTracking:")
-    begin = time.time()
-    res_bt, bt_nassigns = csp.backtracking_search(schedule_exam)
-    end = time.time()
-    print("Result Exam Scheduling:")
-    schedule_exam.display(res_bt)
-    bt_time = end - begin
-
-    # print("Start MAC:")
+    # print("Start simple BackTracking:")
     # begin = time.time()
-    # res_mac, mac_nassigns = csp.backtracking_search(schedule_exam, csp.mrv, csp.lcv, csp.mac)
+    # res_bt, bt_nassigns = csp.backtracking_search(schedule_exam)
     # end = time.time()
     # print("Result Exam Scheduling:")
-    # schedule_exam.display(res_mac)
-    # mac_time = end - begin
+    # schedule_exam.display(res_bt)
+    # bt_time = end - begin
 
-    # print("Start FC:")
+    # print("Start MAC+mrv:")
     # begin = time.time()
-    # res_fc, fc_nassigns = csp.backtracking_search(schedule_exam, csp.mrv, csp.lcv, csp.forward_checking)
+    # res_mac_mrv, mac_mrv_nassigns = csp.backtracking_search(schedule_exam, csp.mrv, csp.lcv, csp.mac)
     # end = time.time()
     # print("Result Exam Scheduling:")
-    # schedule_exam.display(res_fc)
-    # fc_time = end - begin
+    # schedule_exam.display(res_mac_mrv)
+    # mac_mrv_time = end - begin
+    #
+    # print("Start MAC+dom/wdeg:")
+    # begin = time.time()
+    # res_mac_dom, mac_dom_nassigns = csp.backtracking_search(schedule_exam, csp.dom_wdeg, csp.lcv, csp.mac)
+    # end = time.time()
+    # print("Result Exam Scheduling:")
+    # schedule_exam.display(res_mac_dom)
+    # mac_dom_time = end - begin
 
+    # print("Start FC+mrv:")
+    # begin = time.time()
+    # res_fc_mrv, fc_mrv_nassigns = csp.backtracking_search(schedule_exam, csp.mrv, csp.lcv, csp.forward_checking)
+    # end = time.time()
+    # print("Result Exam Scheduling:")
+    # schedule_exam.display(res_fc_mrv)
+    # fc_mrv_time = end - begin
+
+    # print("Start FC+dom/wdeg:")
+    # begin = time.time()
+    # res_fc_dom, fc_dom_nassigns = csp.backtracking_search(schedule_exam, csp.dom_wdeg, csp.lcv, csp.forward_checking)
+    # end = time.time()
+    # print("Result Exam Scheduling:")
+    # schedule_exam.display(res_fc_dom)
+    # fc_dom_time = end - begin
+    #
     # print("Start Min_Conflicts")
     # begin = time.time()
     # res_min, min_nassigns = csp.min_conflicts(schedule_exam)
     # end = time.time()
     # print("Result Exam Scheduling:")
     # schedule_exam.display(res_min)
-    # min-cf_time = end - begin
+    # min_cf_time = end - begin
 
-    print("Total time of simple backtracking is {} with {} assignments".format(bt_time, bt_nassigns))
-    # print("Total time of MAC is {} with {} assignments".format(mac_time, mac_nassigns))
-    # print("Total time of FC is {} with {} assignments".format(fc_time, fc_nassigns))
-    # print("Total time of Min_Conflicts is {} with {} assignments".format(min-cf_time, min_nassigns))
+    # print("Total time of simple backtracking is {} with {} assignments".format(bt_time, bt_nassigns))
+    # print("Total time of MAC+mrv is {} with {} assignments".format(mac_mrv_time, mac_mrv_nassigns))
+    # print("Total time of MAC+dom/wdeg is {} with {} assignments".format(mac_dom_time, mac_dom_nassigns))
+    # print("Total time of FC+mrv is {} with {} assignments".format(fc_mrv_time, fc_mrv_nassigns))
+    # print("Total time of FC+dom/wdeg is {} with {} assignments".format(fc_dom_time, fc_dom_nassigns))
+    # print("Total time of Min_Conflicts is {} with {} assignments".format(min_cf_time, min_nassigns))
