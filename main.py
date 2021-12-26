@@ -114,57 +114,79 @@ class SchedulingExams(csp.CSP):
 if __name__ == '__main__':
     schedule_exam = SchedulingExams("table.csv")
 
-    # print("Start simple BackTracking:")
-    # begin = time.time()
-    # res_bt, bt_nassigns = csp.backtracking_search(schedule_exam)
-    # end = time.time()
-    # print("Result Exam Scheduling:")
-    # schedule_exam.display(res_bt)
-    # bt_time = end - begin
+    # --- SIMPLE BackTracking ---
 
-    # print("Start MAC+mrv:")
-    # begin = time.time()
-    # res_mac_mrv, mac_mrv_nassigns = csp.backtracking_search(schedule_exam, csp.mrv, csp.lcv, csp.mac)
-    # end = time.time()
-    # print("Result Exam Scheduling:")
-    # schedule_exam.display(res_mac_mrv)
-    # mac_mrv_time = end - begin
-    #
-    # print("Start MAC+dom/wdeg:")
-    # begin = time.time()
-    # res_mac_dom, mac_dom_nassigns = csp.backtracking_search(schedule_exam, csp.dom_wdeg, csp.lcv, csp.mac)
-    # end = time.time()
-    # print("Result Exam Scheduling:")
-    # schedule_exam.display(res_mac_dom)
-    # mac_dom_time = end - begin
+    print("Start simple BackTracking:")
+    begin = time.time()
+    res_bt, bt_nassigns = csp.backtracking_search(schedule_exam)
+    end = time.time()
+    print("Result Exam Scheduling:")
+    schedule_exam.display(res_bt)
+    bt_time = end - begin
 
-    # print("Start FC+mrv:")
-    # begin = time.time()
-    # res_fc_mrv, fc_mrv_nassigns = csp.backtracking_search(schedule_exam, csp.mrv, csp.lcv, csp.forward_checking)
-    # end = time.time()
-    # print("Result Exam Scheduling:")
-    # schedule_exam.display(res_fc_mrv)
-    # fc_mrv_time = end - begin
+    # --- MAC + MRV ---
 
-    # print("Start FC+dom/wdeg:")
-    # begin = time.time()
-    # res_fc_dom, fc_dom_nassigns = csp.backtracking_search(schedule_exam, csp.dom_wdeg, csp.lcv, csp.forward_checking)
-    # end = time.time()
-    # print("Result Exam Scheduling:")
-    # schedule_exam.display(res_fc_dom)
-    # fc_dom_time = end - begin
-    #
-    # print("Start Min_Conflicts")
-    # begin = time.time()
-    # res_min, min_nassigns = csp.min_conflicts(schedule_exam)
-    # end = time.time()
-    # print("Result Exam Scheduling:")
-    # schedule_exam.display(res_min)
-    # min_cf_time = end - begin
+    schedule_exam = SchedulingExams("table.csv")
 
-    # print("Total time of simple backtracking is {} with {} assignments".format(bt_time, bt_nassigns))
-    # print("Total time of MAC+mrv is {} with {} assignments".format(mac_mrv_time, mac_mrv_nassigns))
-    # print("Total time of MAC+dom/wdeg is {} with {} assignments".format(mac_dom_time, mac_dom_nassigns))
-    # print("Total time of FC+mrv is {} with {} assignments".format(fc_mrv_time, fc_mrv_nassigns))
-    # print("Total time of FC+dom/wdeg is {} with {} assignments".format(fc_dom_time, fc_dom_nassigns))
-    # print("Total time of Min_Conflicts is {} with {} assignments".format(min_cf_time, min_nassigns))
+    print("Start MAC+mrv:")
+    begin = time.time()
+    res_mac_mrv, mac_mrv_nassigns = csp.backtracking_search(schedule_exam, csp.mrv, csp.lcv, csp.mac)
+    end = time.time()
+    print("Result Exam Scheduling:")
+    schedule_exam.display(res_mac_mrv)
+    mac_mrv_time = end - begin
+
+    # --- MAC + dom/wdeg ---
+
+    schedule_exam = SchedulingExams("table.csv")
+
+    print("Start MAC+dom/wdeg:")
+    begin = time.time()
+    res_mac_dom, mac_dom_nassigns = csp.backtracking_search(schedule_exam, csp.dom_wdeg, csp.lcv, csp.mac)
+    end = time.time()
+    print("Result Exam Scheduling:")
+    schedule_exam.display(res_mac_dom)
+    mac_dom_time = end - begin
+
+    # --- FC + MRV ---
+
+    schedule_exam = SchedulingExams("table.csv")
+
+    print("Start FC+mrv:")
+    begin = time.time()
+    res_fc_mrv, fc_mrv_nassigns = csp.backtracking_search(schedule_exam, csp.mrv, csp.lcv, csp.forward_checking)
+    end = time.time()
+    print("Result Exam Scheduling:")
+    schedule_exam.display(res_fc_mrv)
+    fc_mrv_time = end - begin
+
+    # --- FC + dom/wdeg ---
+
+    schedule_exam = SchedulingExams("table.csv")
+
+    print("Start FC+dom/wdeg:")
+    begin = time.time()
+    res_fc_dom, fc_dom_nassigns = csp.backtracking_search(schedule_exam, csp.dom_wdeg, csp.lcv, csp.forward_checking)
+    end = time.time()
+    print("Result Exam Scheduling:")
+    schedule_exam.display(res_fc_dom)
+    fc_dom_time = end - begin
+
+    # --- MIN CONFLICTS ---
+
+    schedule_exam = SchedulingExams("table.csv")
+
+    print("Start Min_Conflicts")
+    begin = time.time()
+    res_min, min_nassigns = csp.min_conflicts(schedule_exam)
+    end = time.time()
+    print("Result Exam Scheduling:")
+    schedule_exam.display(res_min)
+    min_cf_time = end - begin
+
+    print("Total time of simple backtracking is {} with {} assignments".format(bt_time, bt_nassigns))
+    print("Total time of MAC+mrv is {} with {} assignments".format(mac_mrv_time, mac_mrv_nassigns))
+    print("Total time of MAC+dom/wdeg is {} with {} assignments".format(mac_dom_time, mac_dom_nassigns))
+    print("Total time of FC+mrv is {} with {} assignments".format(fc_mrv_time, fc_mrv_nassigns))
+    print("Total time of FC+dom/wdeg is {} with {} assignments".format(fc_dom_time, fc_dom_nassigns))
+    print("Total time of Min_Conflicts is {} with {} assignments".format(min_cf_time, min_nassigns))
