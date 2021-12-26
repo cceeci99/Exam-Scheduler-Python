@@ -183,7 +183,7 @@ if __name__ == '__main__':
     schedule_exam.display(res_min)
     min_cf_time = end - begin
 
-    print("Total time of simple backtracking is {} with {} assignments and {} checks".format(bt_time, bt_nassigns, bt_checks))
+    print("Total time of simple backtracking is {} with {} assignments".format(bt_time, bt_nassigns))
     print("Total time of MAC+mrv is {} with {} assignments and {} checks".format(mac_mrv_time, mac_mrv_nassigns, mac_mrv_checks))
     print("Total time of MAC+dom/wdeg is {} with {} assignments and {} checks".format(mac_dom_time, mac_dom_nassigns, mac_dom_checks))
     print("Total time of FC+mrv is {} with {} assignments and {} checks".format(fc_mrv_time, fc_mrv_nassigns, fc_mrv_checks))
